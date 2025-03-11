@@ -1,6 +1,6 @@
 | Method                                 | Description                                                  |
 | -------------------------------------- | ------------------------------------------------------------ |
-| [`getAddress()`](#getAddress)            | Sets the Re-Packager's address |
+| [`getAddress()`](#getAddress)            | Gets the Re-Packager's address |
 | [`setAddress([address])`](#setAddress)            | Sets the Re-Packager's address |
 | [`makePackage()`](#makePackage)            | Makes a package |
 
@@ -31,7 +31,7 @@ If the address arg is nil, it'll go back to the default sign-based behavior agai
 
 ### `makePackage()` {#makePackage}
 
-Activates the Re-Packager like if it was powered by redstone. It operates by the same rule as a button press, but unlike a redstone signal, returns a value on if it actually succeeded at making a package.
+Activates the Re-Packager as if it is powered by redstone. It operates by the same rule as a button press, but unlike a redstone signal, returns a value on if it actually succeeded at making a package.
 
 **Returns**
 - `boolean` whether a new package was made successfuly.
