@@ -49,6 +49,14 @@ export default {
                   link: "/users/cc-tweaked-integration/logistics/repackager",
                 },
                 {
+                  text: "Package",
+                  link: "/users/cc-tweaked-integration/logistics/package",
+                },
+                {
+                  text: "Package Order",
+                  link: "/users/cc-tweaked-integration/logistics/package-order",
+                },
+                {
                   text: "Stock Ticker",
                   link: "/users/cc-tweaked-integration/logistics/stock-ticker",
                 },

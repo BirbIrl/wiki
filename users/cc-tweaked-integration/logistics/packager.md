@@ -1,15 +1,71 @@
-| Method                                 | Description                                                  |
-| -------------------------------------- | ------------------------------------------------------------ |
-| [`getAddress()`](#getAddress)            | Gets the packager's address |
-| [`setAddress([address])`](#setAddress)            | Sets the packager's address |
-| [`getItemCount()`](#getItemCount) | Counts the number of items in the connected inventory |
-| [`list()`](#list)  | Lists all items in the connected inventory |
-| [`listDetailed()`](#listDetailed)  | Lists all items in the connected inventory with details (slower) |
-| [`makePackage()`](#makePackage)            | Makes a package |
-| [`getPackageItems()`](#getPackageItems)            | Checks the contents of the currently held package |
+| Method                                  | Description                                           |
+| --------------------------------------- | ----------------------------------------------------- |
+| [`makePackage()`](#makePackage)         | Makes a package.                                    |
+| [`list()`](#list)                       | Lists all items in the connected inventory.         |
+| [`getItemDetail(slot)`](#getItemDetail) | Gets detailed information for a specific item slot. |
+| [`getAddress()`](#getAddress)           | Gets the packager's currently configured address.   |
+| [`setAddress([address])`](#setAddress)  | Sets the packager's address.                        |
+| [`getPackage()`](#getPackage)           | Gets the package currently held by the packager.    |
 
 ---
 
+### `makePackage()` {#makePackage}
+
+Activates the packager. If no package is currently held, it attempts to create a new one.
+It returns `false` if a package was already held before activation or if no package could be created (e.g., insufficient items or no recipe match). Otherwise, it returns `true` if a new package was successfully created and is now held.
+
+**Returns**
+
+- `boolean` `true` if a new package was successfully made, `false` otherwise.
+
+---
+
+### `list()` {#list}
+
+Lists basic information about all available item stacks in the inventory connected to the packager.
+
+**Returns**
+
+- `table` with basic item information.
+Example:
+```lua
+{
+  { name = "minecraft:apple", count = 64 },
+  { name = "minecraft:stick", count = 128 }
+}
+```
+
+---
+
+### `getItemDetail(slot)` {#getItemDetail}
+
+Gets detailed information for a specific item stack in the connected inventory. Slot is the index of the item in `list()`.
+
+**Parameters**
+
+- `slot`: `number` The slot number of the item stack.
+
+**Returns**
+
+- `table` A table with detailed item information, or `nil` if the slot has no items.
+Example:
+```lua
+{
+  count = 64,
+  displayName = "Apple",
+  itemGroups = {},
+  maxCount = 64,
+  name = "minecraft:apple",
+  tags = {}
+  -- ... other details
+}
+```
+
+**Throws**
+
+- If the `slot` number is less than 1.
+
+---
 
 ### `getAddress()` {#getAddress}
 
@@ -17,7 +73,7 @@ Gets the Packager's address.
 
 **Returns**
 
-- `string` With the address currently in use. 
+- `string` The address string.
 
 ---
 
@@ -34,98 +90,10 @@ If the address arg is nil, it'll go back to the default sign-based behavior agai
 
 ---
 
-### `getItemCount()` {#getItemCount}
+### `getPackage()` {#getPackage}
 
-Counts the number of items in the connected inventory.
-
-**Returns**
-
-- `number` The number of items in the connected inventory.
-
----
-
-### `list()` {#list}
-
-Lists basic information about all items in the connected inventory.
+Gets the [`Package`](./package.md) object representing the package currently held by the packager, if any.
 
 **Returns**
 
-- `table` with basic item information like: 
-```lua
-{
-  {
-    name = "minecraft:apple",
-    count = 1,
-  },
-  {
-    name = "minecraft:stick",
-    count = 1,
-  },
-}
-```
-
----
-
-
-### `listDetailed()` {#listDetailed}
-
-Lists detailed information about all items in the connected inventory.
-
-**Returns**
-
-- `table` with detailed item information like: 
-```lua
-  {
-    count = 1,
-    itemGroups = {
-      {
-        id = "minecraft:food_and_drinks",
-        displayName = "Food & Drinks",
-      },
-    },
-    tags = {
-      [ "c:foods/fruit" ] = true,
-      [ "c:animal_foods" ] = true,
-      [ "minecraft:horse_food" ] = true,
-      [ "c:foods" ] = true,
-    },
-    name = "minecraft:apple",
-    maxCount = 64,
-    displayName = "Apple",
-  },
-  {
-    enchantments = {
-      {
-        level = 2,
-        name = "minecraft:knockback",
-        displayName = "Knockback II",
-      },
-    },
-    name = "minecraft:stick",
-    itemGroups = {},
-    tags = {
-      [ "c:rods/wooden" ] = true,
-      [ "c:rods" ] = true,
-    },
-    count = 1,
-    maxCount = 64,
-    displayName = "Stick",
-  },
-}
-```
-
----
-
-### `makePackage()` {#makePackage}
-
-Activates the packager like if it was powered by redstone. It operates by the same rule as a button press, but unlike a redstone signal, returns a value on if it actually succeeded at making a package.
-
-**Returns**
-- `boolean` whether a new package was made successfuly.
-
----
-
-### `getPackageItems()` {#getPackageItems}
-
-**Returns**
-- `table` with detailed item information or `nil` if there's no package.
+- `Package` A Package object, or `nil` if no package is currently held.
