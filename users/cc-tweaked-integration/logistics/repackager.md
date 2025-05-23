@@ -1,11 +1,21 @@
-| Method                                 | Description                                                  |
-| -------------------------------------- | ------------------------------------------------------------ |
-| [`getAddress()`](#getAddress)            | Gets the Re-Packager's address |
-| [`setAddress([address])`](#setAddress)            | Sets the Re-Packager's address |
-| [`makePackage()`](#makePackage)            | Makes a package |
-| [`getPackageItems()`](#getPackageItems)            | Checks the contents of the currently held package |
-| [`getPackageAddress()`](#getPackageAddress)            | Checks the address of the currently held package |
-| [`setPackageAddress()`](#setPackageAddress)            | Sets the address of the currently held package |
+| Method                                 | Description                                        |
+| -------------------------------------- | -------------------------------------------------- |
+| [`makePackage()`](#makePackage)        | Makes a package.                                   |
+| [`getAddress()`](#getAddress)          | Gets the Re-Packager's address.                    |
+| [`setAddress([address])`](#setAddress) | Sets the Re-Packager's address.                    |
+| [`getPackage()`](#getPackage)          | Gets the package currently held by the Repackager. |
+
+---
+
+### `makePackage()` {#makePackage}
+
+Activates the repackager.
+It returns `false` if a package is already held by the repackager *before* activation (as it expects to pick one up or be empty to receive one).
+After attempting activation, it returns `true` if a package is now held (either the input was processed or a new one formed). It returns `false` if the repackager is still empty after activation.
+
+**Returns**
+
+- `boolean` `true` if a package is held after activation, `false` otherwise or if a package was already present initially.
 
 ---
 
@@ -15,52 +25,27 @@ Gets the Re-Packager's address.
 
 **Returns**
 
-- `string` With the address currently in use. 
+- `string` The fallback address string.
 
 ---
 
 ### `setAddress([address])` {#setAddress}
 
-Sets the Re-Packager's address to the given variable until it tries to make a package with no computer attached, at which point it forgets about it and goes back to normal behavior.
-If you want to programatically assign it an address every time, it's a good idea to put .setAddress in a startup.lua file, so it applies the address you want on chunkload.
+Sets the Repackager's fallback address. This address is used if a package being processed does not have its own address.
+This setting is ephemeral and resets if the computer is detached or the chunk unloads. It's recommended to set this in a `startup.lua` file for persistence.
 
-If the address arg is nil, it'll go back to the default sign-based behavior again.
-
-**Parameters**
-
-- _address?:_ `string = nil` Force every package to be addressed to `address`. Goes back to default if address is `nil`.
-
----
-
-### `makePackage()` {#makePackage}
-
-Activates the Re-Packager as if it is powered by redstone. It operates by the same rule as a button press, but unlike a redstone signal, returns a value on if it actually succeeded at making a package.
-
-**Returns**
-- `boolean` whether a new package was made successfuly.
-
----
-
-### `getPackageItems()` {#getPackageItems}
-
-**Returns**
-- `table` with detailed item information or `nil` if there's no package.
-
----
-
-### `getPackageAddress()` {#getPackageAddress}
-
-**Returns**
-- `string` with the package's address or `nil` if there's no package.
-
----
-
-### `setPackageAddress()` {#setPackageAddress}
-Sets the currently held package's address to the given variable.
+If the address arg is nil, it'll clear the custom computer address.
 
 **Parameters**
 
-- _address?:_ `string = nil` Sets the held package's address to `address` if present, and clears the address if address is `nil`.
+- _address?:_ `string = nil` The fallback address to set. Clears the custom address if `nil`.
+
+---
+
+### `getPackage()` {#getPackage}
+
+Gets the [`Package`](./package.md) object representing the package currently held by the Repackager (either an input package or the result of a repackaging operation).
 
 **Returns**
-- `boolean` whether if a package's name was changed (false if no package present).
+
+- `Package` A Package object, or `nil` if no package is currently held.
